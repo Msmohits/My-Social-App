@@ -58,21 +58,35 @@ async def get_all_discussions(db: Session = Depends(get_db)):
     return discussions
 
 
-@get_router.get("/discussions")
+@get_router.get("/likes", status_code=200)
 async def get_users(db: Session = Depends(get_db)):
-    return db.query(Discussion).all()
-
-
-@get_router.get("/likes")
-async def get_users(db: Session = Depends(get_db)):
-    return db.query(Like).all()
+    try:
+        likes = db.query(Like).all()
+    except Exception as e:
+        raise HTTPException(404, str(e))
+    if not likes:
+        raise HTTPException(404, "No like found")
+    return likes
 
 
 @get_router.get("/comments")
 async def get_users(db: Session = Depends(get_db)):
-    return db.query(Comment).all()
+    try:
+        comments = db.query(Comment).all()
+    except Exception as e:
+        raise HTTPException(404, str(e))
+    if not comments:
+        raise HTTPException(404, "No comment found")
+    return comments
 
 
 @get_router.get("/hashtags")
 async def get_users(db: Session = Depends(get_db)):
-    return db.query(Hashtag).all()
+    try:
+        hashtags = db.query(Hashtag).all()
+    except Exception as e:
+        raise HTTPException(404, str(e))
+    if not hashtags:
+        raise HTTPException(404, "No hashtag found")
+    return hashtags
+
